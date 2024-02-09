@@ -1,0 +1,21 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Highlighting Errors and Correcting (HEC)
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Heather E.
+    family-names: Williams
+    email: heather.williams@ualberta.ca
+    affiliation: University of Alberta
+    orcid: 'https://orcid.org/0000-0001-8051-3751'
+repository-code: >-
+  https://github.com/heatherew/Highlighting-Errors-and-Correcting-HEC-
+abstract: >-
+  This code walks the user through the process of correcting
+  training data labels and cutting out erroneous data
+date-released: '2024-02-09'
