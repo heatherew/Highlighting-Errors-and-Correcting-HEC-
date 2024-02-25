@@ -30,16 +30,18 @@ end
 % plot checkboxes for each axis
 for currentRow = 1:size(axes_all,1)
     for currentColumn = 1:size(axes_all,2)
-        set(axes_all(currentRow,currentColumn),'Units','pixels')
+        if ~isempty(EMG_all{currentRow,currentColumn})
+            set(axes_all(currentRow,currentColumn),'Units','pixels')
 
-        % Position: [left bottom width height]
-        checkBoxes(currentRow,currentColumn) = uicheckbox(fig, ...
-            'Text','Problem?','Position', ...
-            [axes_all(currentRow,currentColumn).Position(1) + ...
-            axes_all(currentRow,currentColumn).Position(3)/2.5 ...
-            axes_all(currentRow,currentColumn).Position(2) + ...
-            axes_all(currentRow,currentColumn).Position(4)*1.01  ...
-            84 22]);
+            % Position: [left bottom width height]
+            checkBoxes(currentRow,currentColumn) = uicheckbox(fig, ...
+                'Text','Problem?','Position', ...
+                [axes_all(currentRow,currentColumn).Position(1) + ...
+                axes_all(currentRow,currentColumn).Position(3)/2.5 ...
+                axes_all(currentRow,currentColumn).Position(2) + ...
+                axes_all(currentRow,currentColumn).Position(4)*1.01  ...
+                84 22]);
+        end
     end
 end
 
@@ -56,7 +58,8 @@ continueButton = createStateButton(fig, 'Continue', ...
 waitfor(continueButton,'Value')
 
 % pull out checkbox values, & delete the continue button and checkboxes
-checkBoxValues = arrayfun(@(x) x.Value, checkBoxes);
+notEmptyCheckboxRows = all(arrayfun(@(x) isa(x,'matlab.ui.control.CheckBox'), checkBoxes),2);
+checkBoxValues = [false(1,size(checkBoxes,2)); arrayfun(@(x) x.Value, checkBoxes(notEmptyCheckboxRows,:))];
 delete([continueButton reshape(checkBoxes,1,[])])
 
 % plot an undo button
@@ -361,8 +364,9 @@ if any(checkBoxValues,'all') % if none, will go back w/ no data change
     end
 
     % plot all data and say "Updated" for axes where data was corrected
-    tiledlayout(fig,size(axes_all,1),size(axes_all,2))
-    for currentPosition = 1:size(axes_all,1)
+    rowsToInclude = find(~all(cellfun(@isempty,EMG_all),2))';
+    tiledlayout(fig,length(rowsToInclude),size(axes_all,2))
+    for currentPosition = rowsToInclude
         for currentMovement = 1:size(axes_all,2)
             axes_all(currentPosition,currentMovement) = nexttile; hold on
 

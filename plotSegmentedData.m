@@ -39,7 +39,7 @@ for currentTrial = 1:numel(allEMG)
     
     while undo
         % loop through muscle contractions and plot
-        fig.Name = ['HEC: ' participantID ' Trial ' num2str(currentTrial)];
+        fig.Name = ['HEC: ' num2str(participantID) ' Trial ' num2str(currentTrial)];
         tiledlayout(fig,numel(trialPositions),numel(trialMovements))
         for currentPosition = find(any(~cellfun(@isempty,trialEMG),2))'
             for currentMovement = 1:numel(trialMovements)
